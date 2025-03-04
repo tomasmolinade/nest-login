@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { RoutesModule } from './routes/routes.module';
-import { CreateAccountModule } from './create-account/create-account.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'entities/user.entity';
-import { LoginModule } from './login/login.module';
+import { User } from 'src/user/entities/user.entity';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
-        RoutesModule,
-        CreateAccountModule,
         ServeStaticModule.forRoot({
             rootPath: join(process.cwd(), 'public'),
         }),
@@ -26,7 +23,8 @@ import { LoginModule } from './login/login.module';
             entities: [User], //[process.cwd() + '/entities/*.entity{.ts,.js}'],
             synchronize: true, // set to false in production!
         }),
-        LoginModule,
+        UserModule,
+        AuthModule,
     ],
     controllers: [],
     providers: [],

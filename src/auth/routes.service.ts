@@ -11,7 +11,7 @@ export class RoutesProvider {
         return await fs.readFile('./public/html/create-account.html', 'utf-8');
     }
 
-    async getWebpage() {
-        return await fs.readFile('./public/html/webpage.html', 'utf-8');
-    }
+    // async getWebpage() {
+    //     return await fs.readFile('./public/html/webpage.html', 'utf-8');
+    // }
 }
