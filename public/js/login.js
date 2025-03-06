@@ -54,7 +54,7 @@ loginButton.addEventListener("click", async  (event) => {
       showSucc("Successfully logged in!");
       // console.log(response.jwt);
       // localStorage.setItem('jwt', response.jwt);
-      window.location.href = url + "webpage";
+      window.location.href = url + response.redirect;
     }
 });
 

@@ -2,7 +2,7 @@
 
 const url = 'http://localhost:3000/';
 
-let response = await fetch(url + 'login/info', {
+let response = await fetch(url + 'webpage/info', {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -12,8 +12,15 @@ let response = await fetch(url + 'login/info', {
     showError('Error con el servidor, intenta mas tarde.');
     return;
 });
+try{
+    response = await response.json();
+}
+catch(error)
+{
+    console.log(error);
+    window.location.href = url;
+}
 
-response = await response.json();
 console.log(response)
 if (!response.username)
 {

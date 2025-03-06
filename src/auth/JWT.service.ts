@@ -4,21 +4,22 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class JWTService {
-    constructor(
-        private readonly jwtService: JwtService,
-    ) {}
+    constructor(private readonly jwtService: JwtService) {}
 
     async setSessionCookie(user: User, res): Promise<void> {
-        const payload = { userId: user.id
-        , username: user.username };
-        
-        const token =  this.jwtService.sign(payload);
+        const payload = {
+            userId: user.id,
+            username: user.username,
+            role: user.role,
+        };
+
+        const token = this.jwtService.sign(payload);
 
         res.cookie('jwt', token, {
-            httpOnly: true, 
-            secure: false, 
-            sameSite: 'strict', 
-            maxAge: 3600 * 1000, // 1 hour 
+            httpOnly: true,
+            secure: false,
+            sameSite: 'strict',
+            maxAge: 3600 * 1000, // 1 hour
         });
     }
 }

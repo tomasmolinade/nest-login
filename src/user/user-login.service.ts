@@ -34,6 +34,7 @@ export class UserLogInService {
                 'A user with this email already exists.',
             );
         }
+        data.role = 'user';
         const user = this.userRepository.create(data);
         const insert = await this.userRepository.save(user);
 

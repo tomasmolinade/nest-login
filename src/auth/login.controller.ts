@@ -10,8 +10,8 @@ import {
 import { Response } from 'express';
 import { LogInDTO } from './dto/login.dto';
 import { Request } from 'express';
-import { LogInGuard } from './login.guard';
-import { RoutesProvider } from './routes.service';
+import { LogInGuard } from './guards/login.guard';
+import { AuthRoutesProvider } from './auth-routes.service';
 import { UserLogInService } from 'src/user/user-login.service';
 import { JWTService } from './JWT.service';
 
@@ -19,8 +19,8 @@ import { JWTService } from './JWT.service';
 export class LoginController {
     constructor(
         private readonly userLogInService: UserLogInService,
-        private readonly routesProvider: RoutesProvider,
-        private readonly jWTService: JWTService
+        private readonly routesProvider: AuthRoutesProvider,
+        private readonly jWTService: JWTService,
     ) {}
 
     @Get()
@@ -37,17 +37,13 @@ export class LoginController {
         if (!auth.status) {
             return { status: false, message: 'Wrong username or password!' };
         }
-        console.log(auth.user)
-        // Generate JWT; assume your service now returns a token along with auth info.
-        const token = await this.jWTService.setSessionCookie(auth.user!, res);
 
+        await this.jWTService.setSessionCookie(auth.user!, res);
 
-        return { status: true, message: 'Logged in successfully' };
-    }
-
-    @Get('login/info')
-    @UseGuards(LogInGuard)
-    async getInfo(@Req() req: Request & { username: string }) {
-        return { username: req.username };
+        return {
+            status: true,
+            message: 'Logged in successfully',
+            redirect: auth.user!.role === 'user' ? 'webpage' : 'admin',
+        };
     }
 }
